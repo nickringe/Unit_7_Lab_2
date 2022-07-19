@@ -1,0 +1,12 @@
+package grandcircus.co.hotelApp;
+
+import java.awt.print.Pageable;
+import java.util.List;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface HotelRepository extends MongoRepository<Hotel, String>{
+List <Hotel> findByCity(String city, Pageable pageable);
+
+List<Hotel> findByCity(String city);
+}

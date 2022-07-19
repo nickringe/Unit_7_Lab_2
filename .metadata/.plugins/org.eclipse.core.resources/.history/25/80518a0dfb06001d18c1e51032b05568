@@ -1,0 +1,6 @@
+package grandcircus.co.hotelApp;
+
+@Controller
+public class HomeController {
+
+}

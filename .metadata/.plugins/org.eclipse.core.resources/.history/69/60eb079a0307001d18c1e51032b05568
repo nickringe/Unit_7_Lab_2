@@ -1,0 +1,35 @@
+package grandcircus.co.hotelApp;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class HomeController {
+	
+	@Autowired
+	private HotelRepository repo;
+	
+	@RequestMapping("/")
+	public String displayHome(Model model) {
+		List<Hotel> aList = repo.findAll();
+		
+		//printing out each item in aList (via hotel name) to the console to verify that the data is 
+		//getting recognized from the DB
+		//aList.forEach(h -> { System.out.println(h.getHotelName());});
+		
+		model.addAttribute("nothingspecific", aList);
+		return "home";
+	}
+	
+	@RequestMapping("/display-results")
+	public String displayResults(Model model, @RequestParam String city) {
+		
+		return "display-results";
+	}
+
+}
