@@ -23,7 +23,7 @@ public class HomeController {
 		
 		//printing out each item in aList (via hotel name) to the console to verify that the data is 
 		//getting recognized from the DB
-		aList.forEach(h -> { System.out.println(h.getName());});
+		aList.forEach(h -> { System.out.println(h.getCity());});
 		
 		model.addAttribute("nothingspecific", aList);
 		return "home";
@@ -35,22 +35,22 @@ public class HomeController {
 		List<Hotel> hotelList = new ArrayList<>();
 		
 		if (city.equals("Jackson")) {
-			hotelList = repo.findByCity(city);
+			hotelList = repo.findByCity(city, Sort.by("pricePerNight"));
 			model.addAttribute("displayCity", city);
 		} else if (city.equals("Ann Arbor")) {
-			hotelList = repo.findByCity(city);
+			hotelList = repo.findByCity(city, Sort.by("pricePerNight"));
 			model.addAttribute("displayCity", city);
 			
 		} else if (city.equals("Detroit")) {
-			hotelList = repo.findByCity(city);
+			hotelList = repo.findByCity(city, Sort.by("pricePerNight"));
 			model.addAttribute("displayCity", city);
 			
 		} else if (city.equals("Allentown")) {
-			hotelList = repo.findByCity(city);
+			hotelList = repo.findByCity(city, Sort.by("pricePerNight"));
 			model.addAttribute("displayCity", city);
 			
 		} else {
-			return "/";
+			return "display-results";
 		}
 		
 		hotelList.forEach(h -> { System.out.println(h.getCity());});
@@ -59,10 +59,48 @@ public class HomeController {
 		return "display-results";
 	}
 	
-//	@RequestMapping("/display-results")
-//	public String showResults(Model model) {
-//		return "";
-//	}
+	
+	@PostMapping("/max")
+	public String showMax(Model model, @RequestParam int maxPrice) {
+		List<Hotel> maxList = new ArrayList<>();
+		maxList = repo.findByPricePerNightLessThanEqual(maxPrice, Sort.by("pricePerNight"));
+		
+		//maxList.forEach(h -> { System.out.println(h.getName());});
+		model.addAttribute("maxList", maxList);
+		model.addAttribute("displayMax", maxPrice);
+		return "display-max";
+	}
+	
+	@RequestMapping("/add")
+	public String addToRepo(Model model, 
+							@RequestParam String id,
+							@RequestParam String name,
+							@RequestParam String city, 
+							@RequestParam int pricePerNight) {
+		
+		Hotel hotel = new Hotel();
+		
+		if(id.equals(null) || id.equals("")) {
+			hotel = new Hotel(name, city, pricePerNight);
+		} else {
+			hotel = new Hotel(id, name, city, pricePerNight);
+		}
+		
+		String newId = id;
+		String newName = name;
+		String newCity = city;
+		int newPrice = pricePerNight;
+		
+		model.addAttribute("newId", newId);
+		model.addAttribute("newName", newName);
+		model.addAttribute("newCity", newCity);
+		model.addAttribute("newPrice", newPrice);
+		
+		repo.save(hotel);
+		
+		
+		return "add";
+	}
 	
 
 	

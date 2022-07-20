@@ -22,6 +22,13 @@ public class Hotel {
 		this.city = city;
 		this.pricePerNight = pricePerNight;
 	}
+	
+	public Hotel(String name, String city, int pricePerNight) {
+		super();
+		this.name = name;
+		this.city = city;
+		this.pricePerNight = pricePerNight;
+	}
 
 	public Hotel() {
 		super();
